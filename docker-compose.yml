@@ -14,11 +14,11 @@ services:
     mysql:
         image: 'bitnami/mysql:8.2.0-debian-11-r0'
         ports:
-            - '${FORWARD_DB_PORT:-3310}:3306'
+            - '3306:3306'
         environment:
             MYSQL_ROOT_USER: '${DB_USERNAME}'
             MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
-            MYSQL_ROOT_HOST: '%'
+            MYSQL_ROOT_HOST: '{DB_HOST}'
             MYSQL_DATABASE: '${DB_DATABASE}'
             ALLOW_EMPTY_PASSWORD: 'yes'
         volumes:
