@@ -1,0 +1,28 @@
+services:
+    app:
+        build:
+            context: .
+            dockerfile: Dockerfile.dev
+            args:
+                APP_ENV: 'local'
+        ports:
+            - '80:80'
+        volumes:
+            - '.:/var/www/html'
+        depends_on:
+            - mysql
+    mysql:
+        image: 'bitnami/mysql:8.2.0-debian-11-r0'
+        ports:
+            - '3306:3306'
+        environment:
+            MYSQL_ROOT_USER: '${DB_USERNAME}'
+            MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
+            MYSQL_ROOT_HOST: '{DB_HOST}'
+            MYSQL_DATABASE: '${DB_DATABASE}'
+            ALLOW_EMPTY_PASSWORD: 'yes'
+        volumes:
+            - 'mysql:/var/lib/mysql'
+volumes:
+    mysql:
+        driver: local
