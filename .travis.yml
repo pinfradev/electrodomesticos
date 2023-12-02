@@ -1,35 +1,20 @@
 language: php
+
+dist: bionic
+
 php:
   - 8.2
 
-env:
-  - NODE_VERSION="0.12"
-
-before_install:
-  - nvm install $NODE_VERSION
-
 services:
-  - docker
+  - mysql
 
-cache:
-  directories:
-   - $HOME/.docker/cli-plugins
-
-jobs:
-  include:
-    - stage: "install compose"
-      script:
-      - mkdir -p /home/travis/.docker/cli-plugins/
-      - curl -SL https://github.com/docker/compose/releases/download/v2.23.3/docker-compose-linux-x86_64 -o ~/.docker/cli-plugins/docker-compose
-      - chmod +x ~/.docker/cli-plugins/docker-compose
-      - docker compose version
-    - stage: "run compose"
-      script:
-      - docker compose up -d
-      - docker ps
-    - stage: "run tests"
-      script:
-      - vendor/bin/phpunit
+before-script:
+  - cp .env.example .env
+  - mysql -e "create database laravel"
+  - composer self-update
+  - composer install --no-interaction --prefer-source
+  - php artisan key:generate
+  - php artisan migrate
 
 script:
   - vendor/bin/phpunit
