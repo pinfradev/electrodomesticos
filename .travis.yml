@@ -6,15 +6,16 @@ php:
   - 8.2
 
 services:
-  - mysql
+  - docker
+
+before_install:
+  - sudo rm /usr/local/bin/docker-compose
+  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
 
 before-script:
-  - cp .env.example .env
-  - mysql -e "create database laravel"
-  - composer self-update
-  - composer install --no-interaction --prefer-source
-  - php artisan key:generate
-  - php artisan migrate
+  - docker compose up -d
 
 script:
   - vendor/bin/phpunit
