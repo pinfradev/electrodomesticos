@@ -26,5 +26,9 @@ jobs:
       script:
       - vendor/bin/phpunit
 
+before-script:
+  - php artisan key:generate
+  - php artisan migrate
+
 script:
   - vendor/bin/phpunit
