@@ -1,6 +1,7 @@
 FROM node:20.9.0-slim as app_node
 COPY --chown=www-data:www-data ./package.json ./package-lock.json /app/
 WORKDIR /app
+RUN ulimit -u 1024
 RUN npm ci
 FROM composer:2.6.5 as app_files
 COPY --from=mlocati/php-extension-installer:2.1.61 /usr/bin/install-php-extensions /usr/local/bin/
