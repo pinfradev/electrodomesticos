@@ -3,7 +3,7 @@ php:
   - 8.2
 
 env:
-  - NODE_VERSION="0.18"
+  - NODE_VERSION="0.12"
 
 before_install:
   - nvm install $NODE_VERSION
